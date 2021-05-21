@@ -1,4 +1,5 @@
-import './lib/aframe-aabb-collider-component.min.js';
+import './lib/aframe-aabb-collider-component.min';
+import './lib/aframe-websurfaces.umd';
 
 AFRAME.registerComponent('web-portal', {
   schema: {
@@ -7,6 +8,7 @@ AFRAME.registerComponent('web-portal', {
     player: { default: '' },
     text: { default: '' },
     portalFrame: { default: true },
+    portalWebsurface: { default: true },
   },
 
   init: function () {
@@ -14,8 +16,32 @@ AFRAME.registerComponent('web-portal', {
     const data = this.data;
     const scene = el.sceneEl;
 
-    el.setAttribute('geometry', { primitive: 'plane', width: 1.5, height: 2.4 });
-    el.setAttribute('material', { color: '#faf' });
+    var iframe;
+
+    if (data.portalWebsurface == true) {
+      el.setAttribute('websurface', {
+        url: data.url,
+        width: 1.5,
+        height: 2.4,
+        isInteractable: false,
+      });
+    } else {
+      el.setAttribute('geometry', { primitive: 'plane', width: 1.5, height: 2.4 });
+      el.setAttribute('material', { color: '#faf' });
+
+      iframe = document.createElement('iframe');
+      iframe.src = data.url;
+      document.body.appendChild(iframe);
+
+      iframe.style.position = 'fixed';
+      iframe.style.top = '0';
+      iframe.style.left = '0';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.overflow = 'none';
+      iframe.style.zIndex = -10;
+      iframe.style.display = 'none';
+    }
 
     var player;
     if (data.player !== '') {
@@ -27,23 +53,6 @@ AFRAME.registerComponent('web-portal', {
       //TODO: automatically use the scene camera as the player
       //player = scene.camera;
     }
-
-    var iframe;
-    if (data.iframe !== '') {
-      iframe = document.querySelector(data.iframe);
-    } else {
-      iframe = document.createElement('iframe');
-      iframe.style.position = 'fixed';
-      iframe.style.top = '0';
-      iframe.style.left = '0';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.style.overflow = 'none';
-      iframe.style.zIndex = -10;
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-    }
-    iframe.src = data.url;
 
     const title = document.createElement('a-text');
     title.setAttribute('value', data.text);
@@ -75,7 +84,27 @@ AFRAME.registerComponent('web-portal', {
     }
 
     el.addEventListener('hitstart', function () {
-      console.log('hit');
+      if (data.portalWebsurface) {
+        el.pause();
+
+        iframe = el.websurface_iframe;
+        const context = el.css3d_context.domElement;
+
+        data.style_iframe = iframe.style;
+        data.style_context = context.style;
+        data.style_contextChild = context.children[0].style;
+
+        iframe.style = '';
+        context.style = '';
+        context.children[0].style = '';
+
+        iframe.style.position = 'fixed';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.overflow = 'none';
+      }
 
       scene.style.zIndex = -10;
       scene.style.display = 'none';
@@ -87,7 +116,6 @@ AFRAME.registerComponent('web-portal', {
   },
 
   update: function () {
-    const el = this.el;
     const data = this.data;
 
     data.titleEl.setAttribute('value', data.text);
