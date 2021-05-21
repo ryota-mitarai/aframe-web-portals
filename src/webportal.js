@@ -7,6 +7,8 @@ AFRAME.registerComponent('web-portal', {
     iframe: { default: '' },
     player: { default: '' },
     text: { default: '' },
+    width: { default: 1.5 },
+    height: { default: 2.4 },
     portalFrame: { default: true },
     portalWebsurface: { default: true },
   },
@@ -21,12 +23,12 @@ AFRAME.registerComponent('web-portal', {
     if (data.portalWebsurface == true) {
       el.setAttribute('websurface', {
         url: data.url,
-        width: 1.5,
-        height: 2.4,
+        width: data.width,
+        height: data.height,
         isInteractable: false,
       });
     } else {
-      el.setAttribute('geometry', { primitive: 'plane', width: 1.5, height: 2.4 });
+      el.setAttribute('geometry', { primitive: 'plane', width: data.width, height: data.height });
       el.setAttribute('material', { color: '#faf' });
 
       iframe = document.createElement('iframe');
@@ -56,7 +58,7 @@ AFRAME.registerComponent('web-portal', {
 
     const title = document.createElement('a-text');
     title.setAttribute('value', data.text);
-    title.setAttribute('position', '0 1.75 .4');
+    title.setAttribute('position', `0 ${data.height * 0.5 + 0.25} .4`);
     title.setAttribute('align', 'center');
     el.appendChild(title);
     data.titleEl = title;
