@@ -1,0 +1,30 @@
+{
+  "name": "aframe-web-portals",
+  "version": "1.0.0",
+  "homepage": "",
+  "description": "",
+  "repository": "",
+  "author": "ryota-mitarai",
+  "license": "MIT",
+  "files": [
+    "dist/*.js*"
+  ],
+  "source": "src/webportal.js",
+  "main": "dist/aframe-web-portals.js",
+  "exports": "dist/aframe-web-portals.modern.js",
+  "module": "dist/aframe-web-portals.module.js",
+  "unpkg": "dist/aframe-web-portals.umd.js",
+  "peerDependencies": {
+    "aframe": "*"
+  },
+  "devDependencies": {
+    "microbundle": "^0.13.0"
+  },
+  "scripts": {
+    "build": "microbundle --globals aframe=AFRAME --external aframe",
+    "dev": "microbundle watch"
+  },
+  "keywords": [
+    "aframe"
+  ]
+}
