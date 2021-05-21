@@ -9,6 +9,7 @@ AFRAME.registerComponent('web-portal', {
     text: { default: '' },
     width: { default: 1.5 },
     height: { default: 2.4 },
+    frameWidth: { default: 0.15 },
     portalFrame: { default: true },
     portalWebsurface: { default: true },
   },
@@ -58,30 +59,35 @@ AFRAME.registerComponent('web-portal', {
 
     const title = document.createElement('a-text');
     title.setAttribute('value', data.text);
-    title.setAttribute('position', `0 ${data.height * 0.5 + 0.25} .4`);
+    title.setAttribute('position', `0 ${data.height * 0.5 + 0.25 + data.frameWidth} 0`);
     title.setAttribute('align', 'center');
+    title.setAttribute('side', 'double');
     el.appendChild(title);
     data.titleEl = title;
 
     if (data.portalFrame == true) {
+      const frameWidth = data.frameWidth;
+      const width = data.width;
+      const height = data.height;
+
       const box1 = document.createElement('a-box');
-      box1.setAttribute('position', '.75 0 .24');
-      box1.setAttribute('scale', '.25 2.6 .5');
+      box1.setAttribute('position', `${(width + frameWidth) / 2} 0 0`);
+      box1.setAttribute('scale', `${frameWidth} ${height} ${frameWidth}`);
       el.appendChild(box1);
 
       const box2 = document.createElement('a-box');
-      box2.setAttribute('position', '-.75 0 .24');
-      box2.setAttribute('scale', '.25 2.6 .5');
+      box2.setAttribute('position', `${-(width + frameWidth) / 2} 0 0`);
+      box2.setAttribute('scale', `${frameWidth} ${height} ${frameWidth}`);
       el.appendChild(box2);
 
       const box3 = document.createElement('a-box');
-      box3.setAttribute('position', '0 1.2 .24');
-      box3.setAttribute('scale', '1.7 .25 .5');
+      box3.setAttribute('position', `0 ${(height + frameWidth) / 2} 0`);
+      box3.setAttribute('scale', `${width + frameWidth * 2} ${frameWidth} ${frameWidth}`);
       el.appendChild(box3);
 
       const box4 = document.createElement('a-box');
-      box4.setAttribute('position', '0 0 -.06');
-      box4.setAttribute('scale', '1.6 2.5 .1');
+      box4.setAttribute('position', `0 0 ${-frameWidth / 4 - 0.01}`);
+      box4.setAttribute('scale', `${width + frameWidth * 2} ${height + frameWidth * 2} ${frameWidth / 2}`);
       el.appendChild(box4);
     }
 
