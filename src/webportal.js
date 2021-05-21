@@ -4,7 +4,6 @@ import './lib/aframe-websurfaces.umd';
 AFRAME.registerComponent('web-portal', {
   schema: {
     url: { default: '' },
-    iframe: { default: '' },
     player: { default: '' },
     text: { default: '' },
     width: { default: 1.5 },
