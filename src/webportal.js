@@ -3,8 +3,8 @@ import './lib/aframe-websurfaces.umd';
 
 AFRAME.registerComponent('web-portal', {
   schema: {
-    url: { default: '' },
-    player: { default: '' },
+    url: { default: 'https://aframe.io' },
+    player: { default: '#player' },
     text: { default: '' },
     width: { default: 1.5 },
     height: { default: 2.4 },
