@@ -10,8 +10,8 @@ AFRAME.registerComponent('web-portal', {
     width: { default: 1.5 },
     height: { default: 2.4 },
     frameWidth: { default: 0.15 },
-    portalFrame: { default: true },
-    portalWebsurface: { default: true },
+    enableFrame: { default: true },
+    enableWebsurface: { default: true },
     enableReturnButton: { default: true },
   },
 
@@ -22,7 +22,7 @@ AFRAME.registerComponent('web-portal', {
 
     var iframe;
 
-    if (data.portalWebsurface == true) {
+    if (data.enableWebsurface == true) {
       el.setAttribute('websurface', {
         url: data.url,
         width: data.width,
@@ -43,6 +43,7 @@ AFRAME.registerComponent('web-portal', {
       iframe.style.width = '100%';
       iframe.style.height = '100%';
       iframe.style.overflow = 'none';
+
       iframe.style.zIndex = 10;
       iframe.style.display = 'none';
     }
@@ -90,7 +91,7 @@ AFRAME.registerComponent('web-portal', {
       button.style.display = 'none';
 
       button.onclick = () => {
-        if (data.portalWebsurface == true) {
+        if (data.enableWebsurface == true) {
           const context = el.css3d_context.domElement;
 
           iframe.style = data.style_iframe;
@@ -107,9 +108,7 @@ AFRAME.registerComponent('web-portal', {
       data.returnButton = button;
     }
 
-    var player;
     if (data.player !== '') {
-      player = document.querySelector(data.player);
       el.setAttribute('aabb-collider', { objects: data.player });
     } else {
       console.error('aframe-web-portal: player not defined');
@@ -126,7 +125,7 @@ AFRAME.registerComponent('web-portal', {
     el.appendChild(title);
     data.titleEl = title;
 
-    if (data.portalFrame == true) {
+    if (data.enableFrame == true) {
       const frameWidth = data.frameWidth;
       const width = data.width;
       const height = data.height;
@@ -153,7 +152,7 @@ AFRAME.registerComponent('web-portal', {
     }
 
     el.addEventListener('hitstart', function () {
-      if (data.portalWebsurface == true) {
+      if (data.enableWebsurface == true) {
         el.components['websurface'].pause();
 
         iframe = el.websurface_iframe;
