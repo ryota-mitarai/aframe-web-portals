@@ -18,6 +18,8 @@ AFRAME.registerComponent('web-portal', {
     const data = this.data;
     const scene = this.el.sceneEl;
 
+    el.object3D.position.y += data.height / 2;
+
     var iframe;
 
     if (data.enableWebsurface == true) {
