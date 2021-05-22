@@ -100,15 +100,41 @@ AFRAME.registerComponent('web-portal', {
           el.components['websurface'].play();
         }
 
-        const portalPos = new THREE.Vector3();
-        const portalDir = new THREE.Vector3();
-        el.object3D.getWorldPosition(portalPos);
-        el.object3D.getWorldDirection(portalDir).multiplyScalar(1.5);
-        portalPos.add(portalDir);
-
         const player = document.querySelector(data.player);
-        player.object3D.position.x = portalPos.x;
-        player.object3D.position.z = portalPos.z;
+
+        const portalPos = new THREE.Vector3();
+        el.object3D.getWorldPosition(portalPos);
+        portalPos.y = player.object3D.position.y;
+
+        const portalDir = new THREE.Vector3();
+        el.object3D.getWorldDirection(portalDir).multiplyScalar(1.5);
+
+        const modifiedPos = new THREE.Vector3();
+        modifiedPos.copy(portalPos);
+        modifiedPos.add(portalDir);
+
+        player.object3D.position.x = modifiedPos.x;
+        player.object3D.position.z = modifiedPos.z;
+
+        if (player.components['look-controls']) {
+          player.setAttribute('look-controls', { enabled: false });
+
+          const playerPos = new THREE.Vector3();
+          player.object3D.getWorldPosition(playerPos);
+
+          const lookVector = new THREE.Vector3();
+          lookVector.subVectors(playerPos, portalPos).add(playerPos);
+          console.log(lookVector);
+
+          player.object3D.lookAt(lookVector);
+          player.object3D.updateMatrix();
+
+          const rotation = player.getAttribute('rotation');
+          player.components['look-controls'].pitchObject.rotation.x = THREE.Math.degToRad(rotation.x);
+          player.components['look-controls'].yawObject.rotation.y = THREE.Math.degToRad(rotation.y);
+
+          player.setAttribute('look-controls', { enabled: true });
+        }
 
         scene.style.display = 'block';
         button.style.display = 'none';
