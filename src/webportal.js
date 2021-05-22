@@ -4,7 +4,6 @@ import './lib/aframe-websurfaces.umd';
 AFRAME.registerComponent('web-portal', {
   schema: {
     url: { default: 'https://aframe.io' },
-    player: { default: '#player' },
     text: { default: '' },
     width: { default: 1.5 },
     height: { default: 2.4 },
@@ -17,7 +16,7 @@ AFRAME.registerComponent('web-portal', {
   init: function () {
     const el = this.el;
     const data = this.data;
-    const scene = el.sceneEl;
+    const scene = this.el.sceneEl;
 
     var iframe;
 
@@ -100,11 +99,11 @@ AFRAME.registerComponent('web-portal', {
           el.components['websurface'].play();
         }
 
-        const player = document.querySelector(data.player);
+        const camera = scene.camera.el;
 
         const portalPos = new THREE.Vector3();
         el.object3D.getWorldPosition(portalPos);
-        portalPos.y = player.object3D.position.y;
+        portalPos.y = camera.object3D.position.y;
 
         const portalDir = new THREE.Vector3();
         el.object3D.getWorldDirection(portalDir).multiplyScalar(1.5);
@@ -113,27 +112,26 @@ AFRAME.registerComponent('web-portal', {
         modifiedPos.copy(portalPos);
         modifiedPos.add(portalDir);
 
-        player.object3D.position.x = modifiedPos.x;
-        player.object3D.position.z = modifiedPos.z;
+        camera.object3D.position.x = modifiedPos.x;
+        camera.object3D.position.z = modifiedPos.z;
 
-        if (player.components['look-controls']) {
-          player.setAttribute('look-controls', { enabled: false });
+        if (camera.components['look-controls']) {
+          camera.setAttribute('look-controls', { enabled: false });
 
-          const playerPos = new THREE.Vector3();
-          player.object3D.getWorldPosition(playerPos);
+          const camPos = new THREE.Vector3();
+          camera.object3D.getWorldPosition(camPos);
 
           const lookVector = new THREE.Vector3();
-          lookVector.subVectors(playerPos, portalPos).add(playerPos);
-          console.log(lookVector);
+          lookVector.subVectors(camPos, portalPos).add(camPos);
 
-          player.object3D.lookAt(lookVector);
-          player.object3D.updateMatrix();
+          camera.object3D.lookAt(lookVector);
+          camera.object3D.updateMatrix();
 
-          const rotation = player.getAttribute('rotation');
-          player.components['look-controls'].pitchObject.rotation.x = THREE.Math.degToRad(rotation.x);
-          player.components['look-controls'].yawObject.rotation.y = THREE.Math.degToRad(rotation.y);
+          const rotation = camera.getAttribute('rotation');
+          camera.components['look-controls'].pitchObject.rotation.x = THREE.Math.degToRad(rotation.x);
+          camera.components['look-controls'].yawObject.rotation.y = THREE.Math.degToRad(rotation.y);
 
-          player.setAttribute('look-controls', { enabled: true });
+          camera.setAttribute('look-controls', { enabled: true });
         }
 
         scene.style.display = 'block';
@@ -143,14 +141,15 @@ AFRAME.registerComponent('web-portal', {
       data.returnButton = button;
     }
 
-    if (data.player !== '') {
-      el.setAttribute('aabb-collider', { objects: data.player });
-    } else {
-      console.error('aframe-web-portal: player not defined');
-      return;
-      //TODO: automatically use the scene camera as the player
-      //player = scene.camera;
-    }
+    el.sceneEl.addEventListener('loaded', () => {
+      const cameraEl = scene.camera.el;
+      if (cameraEl.id) {
+        el.setAttribute('aabb-collider', { objects: `#${cameraEl.id}` });
+      } else {
+        cameraEl.id = 'web-portal-cam-tag';
+        el.setAttribute('aabb-collider', { objects: `#${cameraEl.id}` });
+      }
+    });
 
     const title = document.createElement('a-text');
     title.setAttribute('value', data.text);

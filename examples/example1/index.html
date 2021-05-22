@@ -10,28 +10,19 @@
   <body>
     <a-scene>
       <!--Camera-->
-      <a-entity
-        id="player"
-        position="0 1.6 0"
-        camera
-        wasd-controls="acceleration: 15;"
-        look-controls="pointerLockEnabled: false"
-      >
+      <a-entity position="0 1.6 0" camera wasd-controls="acceleration: 15;" look-controls="pointerLockEnabled: false">
         <a-cursor position="0 0 -.05" scale=".04 .04 1"></a-cursor>
         <!--For Collision Detection-->
         <a-cylinder radius="0.75"></a-cylinder>
       </a-entity>
 
       <!--Portal-->
-      <a-entity position="-3 1.2 -6" web-portal="url:https://aframe.io; text:Aframe.io; player:#player;"></a-entity>
+      <a-entity position="-3 1.2 -6" web-portal="url:https://aframe.io; text:Aframe.io;"></a-entity>
       <a-entity
         position="0 1.2 -6"
-        web-portal="url:https://www.cryptovoxels.com/play?coords=S@95E,203N; text:Cryptovoxels; player:#player;"
+        web-portal="url:https://www.cryptovoxels.com/play?coords=S@95E,203N; text:Cryptovoxels;"
       ></a-entity>
-      <a-entity
-        position="3 1.2 -6"
-        web-portal="url:https://app.webaverse.com; text:Webaverse; player:#player;"
-      ></a-entity>
+      <a-entity position="3 1.2 -6" web-portal="url:https://app.webaverse.com; text:Webaverse;"></a-entity>
 
       <!--Environment-->
       <a-sky color="#aff"></a-sky>
