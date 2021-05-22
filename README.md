@@ -8,7 +8,7 @@ An [aframe](https://github.com/aframevr/aframe) component for creating portals t
 
 Check out the [live example](https://codesandbox.io/s/aframe-web-portals-example-27guc).
 
-![Example gif](https://github.com/ryota-mitarai/aframe-websurfaces/blob/master/examples/example1.gif)
+![Example gif](https://github.com/ryota-mitarai/aframe-web-portals/blob/master/examples/example1.gif)
 
 ## Usage
 
