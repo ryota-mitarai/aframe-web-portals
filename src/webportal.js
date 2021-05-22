@@ -100,6 +100,16 @@ AFRAME.registerComponent('web-portal', {
           el.components['websurface'].play();
         }
 
+        const portalPos = new THREE.Vector3();
+        const portalDir = new THREE.Vector3();
+        el.object3D.getWorldPosition(portalPos);
+        el.object3D.getWorldDirection(portalDir).multiplyScalar(1.5);
+        portalPos.add(portalDir);
+
+        const player = document.querySelector(data.player);
+        player.object3D.position.x = portalPos.x;
+        player.object3D.position.z = portalPos.z;
+
         scene.style.display = 'block';
         button.style.display = 'none';
       };
