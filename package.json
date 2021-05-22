@@ -1,6 +1,6 @@
 {
   "name": "aframe-web-portals",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/ryota-mitarai/aframe-web-portals",
   "description": "An aframe component for adding portals to other websites.",
   "repository": "https://github.com/ryota-mitarai/aframe-web-portals.git",
