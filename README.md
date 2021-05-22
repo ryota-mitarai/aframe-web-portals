@@ -24,3 +24,7 @@ To create a portal, add the **web-portal** component.
 | enableFrame        | enables a visual frame around the portal                        | true                |
 | enableWebsurface   | enables a websurface display of the target site                 | true                |
 | enableReturnButton | enables a button overlay upon portal entry for leaving the site | true                |
+
+## Additional Info
+
+The component currently uses AABB collision detection. While web-portals still work when rotated at non axis aligned angles (ie. `rotation="0 30 0"`), the best results will be seen when the portals are aligned with a cardinal direction (ie. `rotation="0 90 0`)
