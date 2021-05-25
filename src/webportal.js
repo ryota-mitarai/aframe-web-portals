@@ -50,10 +50,11 @@ AFRAME.registerComponent('web-portal', {
 
     if (data.enableReturnButton == true) {
       const button = document.createElement('button');
+      button.className = 'web-portal-overlay-button';
       button.innerHTML = 'return';
 
       const css = `
-      button {
+      .web-portal-overlay-button {
         position: fixed;
         top: .5em;
         left: .5em;
