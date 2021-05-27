@@ -1,0 +1,16 @@
+{
+  "name": "csdt",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "serve": "parcel serve --no-cache index.html "
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "*"
+  },
+  "dependencies": {
+    "yjs": "^13.5.8"
+  }
+}

@@ -27,5 +27,8 @@
   "keywords": [
     "aframe",
     "a-frame"
-  ]
+  ],
+  "dependencies": {
+    "yjs": "^13.5.8"
+  }
 }
